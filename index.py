@@ -133,9 +133,9 @@ def secbox():
     open = jsonData['secbox']['open']
     print(str(id) + '\t' + str(open))
     if open:
-        mqttclient.publish(MQTTTOPIC, 'on')
+        mqttclient.publish(MQTTTOPIC, 'True')
     else:
-        mqttclient.publish(MQTTTOPIC, 'off')
+        mqttclient.publish(MQTTTOPIC, 'False')
     return('')
 
 if __name__ == '__main__':
