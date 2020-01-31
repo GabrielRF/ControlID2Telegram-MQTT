@@ -132,6 +132,7 @@ def secbox():
     id = jsonData['secbox']['id']
     open = jsonData['secbox']['open']
     print(str(id) + '\t' + str(open))
+    mqttclient.connect(MQTTSERVER)
     if open:
         mqttclient.publish(MQTTTOPIC, 'True')
     else:
@@ -141,9 +142,7 @@ def secbox():
 if __name__ == '__main__':
     # app.debug = True
     mqttclient = mqtt.Client(client_id='ControlID2Telegram')
-    #mqttclient.on_connect = on_connect
     mqttclient.username_pw_set(MQTTUSER, password=MQTTPASS)
-    mqttclient.connect(MQTTSERVER)
     set_monitor()
     app.run(host=webhook_host, port=webhook_port)
 
