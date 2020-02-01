@@ -128,11 +128,11 @@ def op_mode():
 
 @app.route('/api/notification/secbox', methods=['POST'])
 def secbox():
+    mqttclient.connect(MQTTSERVER)
     jsonData = request.get_json()
     id = jsonData['secbox']['id']
     open = jsonData['secbox']['open']
     print(str(id) + '\t' + str(open))
-    mqttclient.connect(MQTTSERVER)
     if open:
         mqttclient.publish(MQTTTOPIC, 'True')
     else:
