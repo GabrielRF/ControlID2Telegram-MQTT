@@ -100,6 +100,7 @@ def get_event(eventnum):
 
 @app.route('/api/notification/dao', methods=['POST'])
 def index():
+    mqttclient.connect(MQTTSERVER)
     jsonData = request.get_json()
     userid = jsonData['object_changes'][0]['values']['user_id']
     eventnum = jsonData['object_changes'][0]['values']['event']
@@ -113,6 +114,7 @@ def index():
         username = ''
     event = get_event(eventnum)
     sendmsg(bot, dest, userid, username, event)
+    mqttclient.publish(f'{MQTTTOPIC}/name', f'{username} ({userid})')
     return('')
 
 @app.route('/api/notification/operation_mode', methods=['POST'])
@@ -134,9 +136,9 @@ def secbox():
     open = jsonData['secbox']['open']
     print(str(id) + '\t' + str(open))
     if open:
-        mqttclient.publish(MQTTTOPIC, 'True')
+        mqttclient.publish(f'{MQTTTOPIC}/state', 'True')
     else:
-        mqttclient.publish(MQTTTOPIC, 'False')
+        mqttclient.publish(f'{MQTTTOPIC}/state', 'False')
     return('')
 
 if __name__ == '__main__':
